@@ -42,6 +42,9 @@ function App() {
               <li>
                 <a href="#aboutme" className="text-gray-400 hover:text-white hover:underline">Skills</a>
               </li>
+              <li>
+                <a href="https://drive.google.com/file/d/1xIi3lXMCcxta3bcOLjHvznXS2kLqAaIh/view?usp=drive_link" className="text-gray-400 hover:text-white hover:underline">Resume</a>
+              </li>
             </ul>
           </div>
         </div>
@@ -83,8 +86,8 @@ function App() {
                   <p className="text-gray-600 mb-2">Marketplace for Farmers</p>
                   <p className="text-gray-600 mb-2">Where they can check crop prices and suitable weather for farming.</p>
                   <div className="flex justify-between">
-                    <button className="flex items-center px-4 py-2 bg-gradient-to-t from-blue-500 to-cyan-500 text-white rounded-full"><FaLink className="mr-2" /> Live Preview</button>
-                    <button className="flex items-center px-4 py-2 border border-gray-300 rounded-full"><FaGithub className="mr-2" /> GitHub</button>
+                    <button className="flex items-center px-4 py-2 bg-gradient-to-t from-blue-500 to-cyan-500 text-white rounded-full"><FaLink className="mr-2" /><a href="agri-buy.vercel.app">Live Preview</a></button>
+                    <button className="flex items-center px-4 py-2 border border-gray-300 rounded-full"><FaGithub className="mr-2" /><a href="https://github.com/BRAVO23111/Agri-BUY"> GitHub</a></button>
                   </div>
                 </div>
               </div>
@@ -95,8 +98,8 @@ function App() {
                   <p className="text-gray-600 mb-2">Marketplace for Farmers</p>
                   <p className="text-gray-600 mb-2">MedHelp is a web application designed to facilitate the booking of appointments with local doctors.</p>
                   <div className="flex justify-between">
-                    <button className="flex items-center px-4 py-2 bg-gradient-to-t from-blue-500 to-cyan-500 text-white rounded-full"><FaLink className="mr-2" /> Live Preview</button>
-                    <button className="flex items-center px-4 py-2 border border-gray-300 rounded-full"><FaGithub className="mr-2" /> GitHub</button>
+                    <button className="flex items-center px-4 py-2 bg-gradient-to-t from-blue-500 to-cyan-500 text-white rounded-full"><FaLink className="mr-2" /><a href="medhelp-v1.vercel.app/">Live Preview</a></button>
+                    <button className="flex items-center px-4 py-2 border border-gray-300 rounded-full"><FaGithub className="mr-2" /><a href="https://github.com/BRAVO23111/Medhelp-2">GitHub</a></button>
                   </div>
                 </div>
               </div>
@@ -107,8 +110,8 @@ function App() {
                   <p className="text-gray-600 mb-2">Realtime Chat Application</p>
                   <p className="text-gray-600 mb-2">Users can create rooms to talk in groups</p>
                   <div className="flex justify-between">
-                    <button className="flex items-center px-4 py-2 bg-gradient-to-t from-blue-500 to-cyan-500 text-white rounded-full mt-1"><FaLink className="mr-2" /> Live Preview</button>
-                    <button className="flex items-center px-4 py-2 border border-gray-300 rounded-full"><FaGithub className="mr-2" /> GitHub</button>
+                    <button className="flex items-center px-4 py-2 bg-gradient-to-t from-blue-500 to-cyan-500 text-white rounded-full mt-1"><FaLink className="mr-2" /><a href="https://github.com/BRAVO23111/Chat-and-notification-feature-codepth">Live Preview</a></button>
+                    <button className="flex items-center px-4 py-2 border border-gray-300 rounded-full"><FaGithub className="mr-2" /><a href="https://github.com/BRAVO23111/Chat-and-notification-feature-codepth">Github</a></button>
                   </div>
                 </div>
               </div>
@@ -120,7 +123,7 @@ function App() {
                   <p className="text-gray-600 mb-2">Users can create their favourite recipes and can save the recipes created by other peoples</p>
                   <div className="flex justify-between">
                     <button className="flex items-center px-4 py-2 bg-gradient-to-t from-blue-500 to-cyan-500 text-white rounded-full mt-1"><FaLink className="mr-2" /> Live Preview</button>
-                    <button className="flex items-center px-4 py-2 border border-gray-300 rounded-full"><FaGithub className="mr-2" /> GitHub</button>
+                    <button className="flex items-center px-4 py-2 border border-gray-300 rounded-full"><FaGithub className="mr-2" /><a href="https://github.com/BRAVO23111/Recipe-View">GitHub</a></button>
                   </div>
                 </div>
               </div>
@@ -284,10 +287,21 @@ function App() {
                 </p>
               </div>
               <div className="pl-24 mt-24 relative before:w-4 before:h-4 before:bg-gradient-to-t before:from-blue-500 before:to-cyan-500 before:absolute before:rounded-full before:left-[58px]">
+                <h3 className="absolute left-0 text-lg font-semibold">2023</h3>
+                <p>
+                  Qualified Internal Round of Smart India Hackathon and Got Selected For Diversion 2023
+                </p>
+              </div>
+              <div className="pl-24 mt-24 relative before:w-4 before:h-4 before:bg-gradient-to-t before:from-blue-500 before:to-cyan-500 before:absolute before:rounded-full before:left-[58px]">
+                <h3 className="absolute left-0 text-lg font-semibold">2023</h3>
+                <p>
+                 Voluntereed Many Workshops For the GDSC ,Got certified for Amazon Cloud Practioner Essentials
+                </p>
+              </div>
+              <div className="pl-24 mt-24 relative before:w-4 before:h-4 before:bg-gradient-to-t before:from-blue-500 before:to-cyan-500 before:absolute before:rounded-full before:left-[58px]">
                 <h3 className="absolute left-0 text-lg font-semibold">2024</h3>
                 <p>
-                  Worked out in which field I want to build a developer's career
-                  and started to learn Frontend Development.
+                  Build Projects and actively seeking internships in Full Stack development
                 </p>
               </div>
             </div>
