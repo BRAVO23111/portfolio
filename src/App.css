@@ -1,0 +1,10 @@
+body {
+  background-color: #000;
+  color: #fff;
+}
+
+.gradient-text {
+  background-image: linear-gradient(to top, #1E40AF, #06B6D4);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
