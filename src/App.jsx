@@ -68,7 +68,7 @@ function App() {
               </li>
               <li>
                 <a
-                  href="https://drive.google.com/file/d/1xIi3lXMCcxta3bcOLjHvznXS2kLqAaIh/view?usp=drive_link"
+                  href="https://drive.google.com/file/d/1bUo8O94p0hqVRkV-2mWdtY4cz8mJaI2t/view?usp=sharing"
                   className="text-gray-400 hover:text-white hover:underline"
                 >
                   Resume
