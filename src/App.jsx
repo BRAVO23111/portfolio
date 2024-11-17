@@ -1,521 +1,434 @@
-import "./App.css";
-import {
-  FaGithub,
-  FaLink,
-  FaFacebook,
-  FaLinkedin,
-  FaArrowUp,
-  FaLongArrowAltRight,
-} from "react-icons/fa";
-import { FaRegChessKnight } from "react-icons/fa6";
-import { BiLogoInstagram } from "react-icons/bi";
+import React, { useState, useEffect } from 'react';
+import { ChevronUp, ExternalLink, Github, Linkedin, Mail } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
-import { useEffect, useState } from "react";
-import Typewriter from "typewriter-effect";
-import TypeIt from "typeit";
+const TypewriterEffect = () => {
+  const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
+  const [currentText, setCurrentText] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
+  
+  const phrases = [
+    "Hire Me",
+    "Backend Developer ",
+    "Frontend Developer",
+    "Full Stack Developer"
+  ];
 
-function App() {
-  const [scrolling, setScrolling] = useState(false);
+  useEffect(() => {
+    const phrase = phrases[currentPhraseIndex];
+    const time = isDeleting ? 50 : 100;
 
-  const onPageScroll = () => {
-    if (window.pageYOffset > 200) {
-      setScrolling(true);
+    const timeout = setTimeout(() => {
+      setCurrentText(prev => {
+        if (!isDeleting) {
+          // Adding text
+          if (prev.length < phrase.length) {
+            return phrase.slice(0, prev.length + 1);
+          } else {
+            setTimeout(() => setIsDeleting(true), 1000);
+            return prev;
+          }
+        } else {
+          // Deleting text
+          if (prev.length > 0) {
+            return prev.slice(0, prev.length - 1);
+          } else {
+            setIsDeleting(false);
+            setCurrentPhraseIndex((currentPhraseIndex + 1) % phrases.length);
+            return '';
+          }
+        }
+      });
+    }, time);
+
+    return () => clearTimeout(timeout);
+  }, [currentText, isDeleting, currentPhraseIndex]);
+
+  return (
+    <span className="text-blue-400">
+      {currentText}
+      <span className="animate-blink">|</span>
+    </span>
+  );
+};
+
+const ScrollToTop = () => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  const toggleVisibility = () => {
+    if (window.pageYOffset > 300) {
+      setIsVisible(true);
     } else {
-      setScrolling(false);
+      setIsVisible(false);
     }
   };
 
-  // useEffect(() => {
-  //   new TypeIt("#strings", {
-  //     strings: ["Full Stack Developer" , "Backend Developer"],
-  //     speed: 50,
-  //     waitUntilVisible: true,
-  //   }).go();
-  // }, []);
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', toggleVisibility);
+    return () => {
+      window.removeEventListener('scroll', toggleVisibility);
+    };
+  }, []);
 
   return (
-    <>
-      <div className="container m-auto">
-        <div className="flex flex-row justify-between px-4 py-6">
-          <div>
-            <h1 className="font-bold text-2xl">My Portfolio</h1>
-          </div>
-          <div>
-            <ul className="flex gap-9">
-              <li>
-                <a
-                  href="#projects"
-                  className="text-gray-400 hover:text-white hover:underline"
+    <AnimatePresence>
+      {isVisible && (
+        <motion.button
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 20 }}
+          onClick={scrollToTop}
+          className="fixed bottom-8 right-8 p-3 bg-blue-500 rounded-full shadow-lg hover:bg-blue-600 transition-colors z-50"
+        >
+          <ChevronUp className="w-6 h-6" />
+        </motion.button>
+      )}
+    </AnimatePresence>
+  );
+};
+
+const Portfolio = () => {
+  const projects = [
+    {
+      title: "Med Help",
+      description: "MedHelp is an all-in-one hospital management system enabling patients to book doctors, store prescriptions, and manage health records, while admins and doctors streamline operations and appointments..",
+      image: "https://i.postimg.cc/C5B2dWtw/Screenshot-2024-11-17-at-6-10-02-PM.png",
+      github: "https://github.com/BRAVO23111/Medhelp-2",
+      live: "https://medhelp-v1.vercel.app/",
+      tech: ["Node.js", "Express", "MongoDB" , "ReactJs" , "Tailwind CSS" , "Recoil" , "Twillo API "]
+    },
+    {
+      title: "Connect",
+      description: "A real-time chat application where users can create rooms for group conversations, featuring privacy enhancements such as secure access and encrypted communication for confidential discussions.",
+      image: "https://i.postimg.cc/50kG4xsP/Screenshot-2024-11-17-at-6-10-32-PM.png ",
+      github: "https://github.com/BRAVO23111/Chat-and-notification-feature-codepth",
+      live: "https://connect-v1-project.vercel.app/",
+      tech: ["Firebase", "Framer Motion",  "React", "Tailwind CSS"]
+    },
+    {
+      title: "Share Newz",
+      description: "Simplified Financial Tracker to track all the investment at a single place",
+      image: "https://i.postimg.cc/ZRq2z9xB/Screenshot-2024-11-17-at-6-11-00-PM.png      ",
+      github: "https://github.com/BRAVO23111/SHARE-NEWZ",
+      live: "https://share-newz-mp1v.vercel.app/",
+      tech: ["React", "Express", "MongoDB" ,"NodeJs" , "Material UI" , "Javascript"
+    ] 
+    },
+    {
+      title: "ReStory",
+      description: "One stop destination for buying and selling unused / exclusive books ",
+      image: "https://i.postimg.cc/jjcm16PY/Screenshot-2024-11-17-at-6-11-45-PM.png      ",
+      github: "https://github.com/BRAVO23111/ReStory",
+      live: "https://re-story.vercel.app/",
+      tech: ["React", "Express", "MongoDB" ,"Framer Motion" , "Nodejs" , "Redux" ,"Tailwind CSS"]
+    }
+  ];
+
+  const skills = [
+    { name: "React", level: 90 },
+    { name: "Node.js", level: 85 },
+    { name: "MongoDB", level: 80 },
+    { name: "Express", level: 85 },
+    { name: "TypeScript", level: 75 },
+    { name: "Next.js", level: 80 },
+    { name: "TailwindCSS", level: 90 },
+    { name: "Docker", level: 70 },
+    { name: "AWS", level: 70 },
+    { name: "Firebase", level: 80 },
+    { name: "Redux", level: 80 },
+    { name: "Framer Motion", level: 60 },
+  ];
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.5
+      }
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 to-slate-900 text-white">
+      {/* Navbar */}
+      <motion.nav 
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="fixed w-full bg-slate-950/80 backdrop-blur-lg z-50"
+      >
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between h-16">
+            <motion.span 
+              whileHover={{ scale: 1.1 }}
+              className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text"
+            >
+              DM
+            </motion.span>
+            <div className="hidden md:flex space-x-8">
+              {['Projects', 'Skills', 'Contact'].map((item) => (
+                <motion.a 
+                  key={item}
+                  href={`#${item.toLowerCase()}`}
+                  whileHover={{ scale: 1.1, color: '#60A5FA' }}
+                  className="transition-colors"
                 >
-                  Projects
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#technologies"
-                  className="text-gray-400 hover:text-white hover:underline"
-                >
-                  Technologies
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#aboutme"
-                  className="text-gray-400 hover:text-white hover:underline"
-                >
-                  Skills
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://drive.google.com/file/d/1bUo8O94p0hqVRkV-2mWdtY4cz8mJaI2t/view?usp=sharing"
-                  className="text-gray-400 hover:text-white hover:underline"
-                >
-                  Resume
-                </a>
-              </li>
-               <li>
-                <a
-                  href="#contact"
-                  className="text-gray-400 hover:text-white hover:underline"
-                >
-                 Contact me 
-                </a>
-              </li>
-            </ul>
+                  {item}
+                </motion.a>
+              ))}
+            </div>
           </div>
         </div>
+      </motion.nav>
+
+      {/* Hero Section */}
+      <div className="min-h-screen flex items-center justify-center pt-16">
+        <div className="container mx-auto px-4 text-center">
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text"
+          >
+            Debanjan Mukherjee
+          </motion.h1>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="text-2xl md:text-4xl text-slate-400 mb-8 h-12"
+          >
+            <TypewriterEffect />
+          </motion.div>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7, duration: 0.5 }}
+            className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-12"
+          >
+            Crafting seamless digital experiences from front to back.
+            Specializing in MERN stack development to bring your vision to life.
+          </motion.p>
+          <motion.div 
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="flex justify-center space-x-6"
+          >
+            {[
+              { href: "https://github.com/BRAVO23111", icon: <Github className="w-6 h-6" /> },
+              { href: "https://www.linkedin.com/in/debanjan-mukherjee-1b8257170/", icon: <Linkedin className="w-6 h-6" /> },
+              { href: "mailto:debanjanmukherjee015@gmail.com", icon: <Mail className="w-6 h-6" /> }
+            ].map((social, index) => (
+              <motion.a
+                key={index}
+                href={social.href}
+                variants={itemVariants}
+                whileHover={{ scale: 1.2 }}
+                className="p-3 bg-slate-800 rounded-full hover:bg-slate-700 transition-colors"
+              >
+                {social.icon}
+              </motion.a>
+            ))}
+          </motion.div>
+        </div>
       </div>
-      <section className="flex items-center justify-center">
-        <div className="container mx-auto px-4 text-center mt-20 mb-10">
-          <h1 className="font-bold text-5xl">Hello, I am Debanjan Mukherjee</h1>
-          <h1 className="font-bold text-3xl my-8 text-blue-500 overflow-hidden whitespace-nowrap">
-            <Typewriter
-              onInit={(typewriter) => {
-                typewriter
-                  .typeString("Your Full stack Developer")
-                  .pauseFor(1000)
-                  .deleteAll()
-                  .typeString("Your Frontend Developer")
-                  .pauseFor(1000)
-                  .deleteAll()
-                  .typeString("Your Backend Developer")
-                  .start();
-              }}
-            />
-          </h1>
-          <p className="mt-4 text-gray-600">
-            Crafting seamless digital experiences from front to back. I
-            specialize in MERN stack development to bring your website vision to
-            vibrant life.
-          </p>
+
+      {/* Projects Section */}
+      <section id="projects" className="py-20">
+        <div className="container mx-auto px-4">
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+            className="text-4xl font-bold text-center mb-16"
+          >
+            Projects
+          </motion.h2>
+          <motion.div 
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid grid-cols-1 md:grid-cols-2 gap-8"
+          >
+            {projects.map((project, index) => (
+              <motion.div
+                key={index}
+                variants={itemVariants}
+                whileHover={{ y: -8 }}
+                className="group relative bg-slate-800/50 rounded-xl overflow-hidden backdrop-blur-sm transition-all duration-300"
+              >
+                <div className="aspect-video overflow-hidden">
+                  <img 
+                    src={project.image} 
+                    alt={project.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+                <div className="p-6">
+                  <h3 className="text-2xl font-bold mb-2">{project.title}</h3>
+                  <p className="text-slate-400 mb-4">{project.description}</p>
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    {project.tech.map((tech, i) => (
+                      <span key={i} className="px-3 py-1 bg-slate-700 rounded-full text-sm">
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="flex gap-4">
+                    <motion.a 
+                      whileHover={{ scale: 1.05 }}
+                      href={project.github}
+                      className="flex items-center gap-2 px-4 py-2 bg-slate-700 rounded-lg hover:bg-slate-600 transition-colors"
+                    >
+                      <Github className="w-4 h-4" />
+                      Code
+                    </motion.a>
+                    <motion.a 
+                      whileHover={{ scale: 1.05 }}
+                      href={project.live}
+                      className={`flex items-center gap-2 px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-500 transition-colors ${project.live === '#' ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                      Live
+                    </motion.a>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
       </section>
 
-      <main>
-        <section id="projects">
-          <div className="container mx-auto mt-10">
-            <h2 className="text-3xl font-semibold mb-8 text-center">
-              Projects
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="border rounded-md overflow-hidden shadow-md">
-                <img
-                  src="https://i.postimg.cc/6qzS500r/Screenshot-2023-09-09-at-10-27-44-PM.png"
-                  className="w-full h-auto"
-                  alt="Agri Buy"
-                />
-                <div className="p-4">
-                  <h3 className="text-lg font-bold mb-2">Agri Buy</h3>
-                  <p className="text-gray-600 mb-2">Marketplace for Farmers</p>
-                  <p className="text-gray-600 mb-2">
-                    Where they can check crop prices and suitable weather for
-                    farming.
-                  </p>
-                  <div className="flex justify-between">
-                    <button className="flex items-center px-4 py-2 bg-gradient-to-t from-blue-500 to-cyan-500 text-white rounded-full">
-                      <FaLink className="mr-2" />
-                      <a href="agri-buy.vercel.app">Live Preview</a>
-                    </button>
-                    <button className="flex items-center px-4 py-2 border border-gray-300 rounded-full">
-                      <FaGithub className="mr-2" />
-                      <a href="https://github.com/BRAVO23111/Agri-BUY">
-                        {" "}
-                        GitHub
-                      </a>
-                    </button>
-                  </div>
+      {/* Skills Section */}
+      <section id="skills" className="py-20 bg-slate-800/30">
+        <div className="container mx-auto px-4">
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+            className="text-4xl font-bold text-center mb-16"
+          >
+            Skills
+          </motion.h2>
+          <motion.div 
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+          >
+            {skills.map((skill, index) => (
+              <motion.div
+                key={index}
+                variants={itemVariants}
+                whileHover={{ scale: 1.05 }}
+                className="bg-slate-800/50 rounded-xl p-6 backdrop-blur-sm"
+              >
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-xl font-bold">{skill.name}</h3>
+                  <span className="text-blue-400">{skill.level}%</span>
                 </div>
-              </div>
-              <div className="border rounded-md overflow-hidden shadow-md">
-                <img
-                  src="https://i.postimg.cc/sfcDhCHc/Screenshot-2024-05-16-at-12-17-32-PM.png"
-                  className="w-full h-auto"
-                  alt="Med Help"
-                />
-                <div className="p-4">
-                  <h3 className="text-lg font-bold mb-2">Med Help</h3>
-                  <p className="text-gray-600 mb-2">Marketplace for Farmers</p>
-                  <p className="text-gray-600 mb-2">
-                    MedHelp is a web application designed to facilitate the
-                    booking of appointments with local doctors.
-                  </p>
-                  <div className="flex justify-between">
-                    <button className="flex items-center px-4 py-2 bg-gradient-to-t from-blue-500 to-cyan-500 text-white rounded-full">
-                      <FaLink className="mr-2" />
-                      <a href="medhelp-v1.vercel.app/">Live Preview</a>
-                    </button>
-                    <button className="flex items-center px-4 py-2 border border-gray-300 rounded-full">
-                      <FaGithub className="mr-2" />
-                      <a href="https://github.com/BRAVO23111/Medhelp-2">
-                        GitHub
-                      </a>
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div className="border rounded-md overflow-hidden shadow-md">
-                <img
-                  src="https://i.postimg.cc/gcymGst6/Screenshot-2024-05-16-at-1-07-19-PM.png"
-                  className="w-full h-auto"
-                  alt="Med Help"
-                />
-                <div className="p-4">
-                  <h3 className="text-lg font-bold mb-2">ChATTY</h3>
-                  <p className="text-gray-600 mb-2">
-                    Realtime Chat Application
-                  </p>
-                  <p className="text-gray-600 mb-2">
-                    Users can create rooms to talk in groups
-                  </p>
-                  <div className="flex justify-between">
-                    <button className="flex items-center px-4 py-2 bg-gradient-to-t from-blue-500 to-cyan-500 text-white rounded-full mt-1">
-                      <FaLink className="mr-2" />
-                      <a href="https://github.com/BRAVO23111/Chat-and-notification-feature-codepth">
-                        Live Preview
-                      </a>
-                    </button>
-                    <button className="flex items-center px-4 py-2 border border-gray-300 rounded-full">
-                      <FaGithub className="mr-2" />
-                      <a href="https://github.com/BRAVO23111/Chat-and-notification-feature-codepth">
-                        Github
-                      </a>
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div className="border rounded-md overflow-hidden shadow-md">
-                <img
-                  src="https://i.postimg.cc/tC6LyNqV/Screenshot-2024-04-11-at-9-53-54-PM.png"
-                  className="w-full h-auto"
-                  alt="Med Help"
-                />
-                <div className="p-4">
-                  <h3 className="text-lg font-bold mb-2">Recipes</h3>
-                  <p className="text-gray-600 mb-2">Recipe Blog Website</p>
-                  <p className="text-gray-600 mb-2">
-                    Users can create their favourite recipes and can save the
-                    recipes created by other peoples
-                  </p>
-                  <div className="flex justify-between">
-                    <button className="flex items-center px-4 py-2 bg-gradient-to-t from-blue-500 to-cyan-500 text-white rounded-full mt-1">
-                      <FaLink className="mr-2" /> Live Preview
-                    </button>
-                    <button className="flex items-center px-4 py-2 border border-gray-300 rounded-full">
-                      <FaGithub className="mr-2" />
-                      <a href="https://github.com/BRAVO23111/Recipe-View">
-                        GitHub
-                      </a>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="py-10" id="technologies">
-          <div className="container m-auto px-4">
-            <h2 className="text-2xl font-semibold">Technologies</h2>
-            <div className="mt-14">
-              <div>
-                <div className="flex justify-between items-center">
-                  <h2 className="font-semibold">C++</h2>
-                  <p className="text-gray-500">Advanced</p>
-                </div>
-                <span className="w-full h-2 mt-2 bg-gradient-to-t from-blue-500 to-cyan-500 block rounded-md" />
-              </div>
-              <div className="mt-8">
-                <div className="flex justify-between items-center">
-                  <h2 className="font-semibold">CSS, Sass & Bootstrap</h2>
-                  <p className="text-gray-500">Advanced</p>
-                </div>
-                <span className="w-full h-2 mt-2 bg-gradient-to-t from-blue-500 to-cyan-500 block rounded-md" />
-              </div>
-              <div className="mt-8">
-                <div className="flex justify-between items-center">
-                  <h2 className="font-semibold">JavaScript, TypeScript</h2>
-                  <p className="text-gray-500">Advanced</p>
-                </div>
-                <span className="w-[80%] h-2 mt-2 bg-gradient-to-t from-blue-500 to-cyan-500 block rounded-md" />
-              </div>
-              <div className="mt-8">
-                <div className="flex justify-between items-center">
-                  <h2 className="font-semibold">NextJS</h2>
-                  <p className="text-gray-500">Advanced</p>
-                </div>
-                <span className="w-[55%] h-2 mt-2 bg-gradient-to-t from-blue-500 to-cyan-500 block rounded-md" />
-              </div>
-
-              <div className="mt-8">
-                <div className="flex justify-between items-center">
-                  <h2 className="font-semibold">React</h2>
-                  <p className="text-gray-500">Advanced</p>
-                </div>
-                <span className="w-[90%] h-2 mt-2 bg-gradient-to-t from-blue-500 to-cyan-500 block rounded-md" />
-              </div>
-
-              <div className="mt-8">
-                <div className="flex justify-between items-center">
-                  <h2 className="font-semibold">ExpressJs</h2>
-                  <p className="text-gray-500">Advanced</p>
-                </div>
-                <span className="w-[90%] h-2 mt-2 bg-gradient-to-t from-blue-500 to-cyan-500 block rounded-md" />
-              </div>
-              <div className="mt-8">
-                <div className="flex justify-between items-center">
-                  <h2 className="font-semibold">MongoDB</h2>
-                  <p className="text-gray-500">Advanced</p>
-                </div>
-                <span className="w-[80%] h-2 mt-2 bg-gradient-to-t from-blue-500 to-cyan-500 block rounded-md" />
-              </div>
-              <div className="mt-8">
-                <div className="flex justify-between items-center">
-                  <h2 className="font-semibold">NodeJs</h2>
-                  <p className="text-gray-500">Advanced</p>
-                </div>
-                <span className="w-[80%] h-2 mt-2 bg-gradient-to-t from-blue-500 to-cyan-500 block rounded-md" />
-              </div>
-            </div>
-          </div>
-        </section>
-        <section>
-          <div className="container m-auto px-4 py-14">
-            <h2 className="text-2xl font-semibold">
-              Additional technologies and skills
-            </h2>
-            <div className="flex flex-col sm:flex-row gap-4 sm:gap-28 mt-12 w-[80%]">
-              <div>
-                <p className="font-bold before:w-4 before:h-4 before:bg-gradient-to-t before:from-blue-500 before:to-cyan-500 before:block before:rounded-full before:mt-1 before:-left-6 before:absolute relative left-5">
-                  Git
-                </p>
-              </div>
-              <div>
-                <p className="font-bold before:w-4 before:h-4 before:bg-gradient-to-t before:from-blue-500 before:to-cyan-500 before:block before:rounded-full before:mt-1 before:-left-6 before:absolute relative left-5">
-                  Github
-                </p>
-              </div>
-              <div>
-                <p className="font-bold before:w-4 before:h-4 before:bg-gradient-to-t before:from-blue-500 before:to-cyan-500 before:block before:rounded-full before:mt-1 before:-left-6 before:absolute relative left-5">
-                  C++
-                </p>
-              </div>
-              <div>
-                <p className="font-bold before:w-4 before:h-4 before:bg-gradient-to-t before:from-blue-500 before:to-cyan-500 before:block before:rounded-full before:mt-1 before:-left-6 before:absolute relative left-5">
-                  JAVA
-                </p>
-              </div>
-              <div>
-                <p className="font-bold before:w-4 before:h-4 before:bg-gradient-to-t before:from-blue-500 before:to-cyan-500 before:block before:rounded-full before:mt-1 before:-left-6 before:absolute relative left-5">
-                  Redux
-                </p>
-              </div>
-              <div>
-                <p className="font-bold before:w-4 before:h-4 before:bg-gradient-to-t before:from-blue-500 before:to-cyan-500 before:block before:rounded-full before:mt-1 before:-left-6 before:absolute relative left-5">
-                  Recoil
-                </p>
-              </div>
-              <div>
-                <p className="font-bold before:w-4 before:h-4 before:bg-gradient-to-t before:from-blue-500 before:to-cyan-500 before:block before:rounded-full before:mt-1 before:-left-6 before:absolute relative left-5">
-                  Docker
-                </p>
-              </div>
-              <div>
-                <p className="font-bold before:w-4 before:h-4 before:bg-gradient-to-t before:from-blue-500 before:to-cyan-500 before:block before:rounded-full before:mt-1 before:-left-6 before:absolute relative left-5">
-                  Figma
-                </p>
-              </div>
-              <div>
-                <p className="font-bold before:w-4 before:h-4 before:bg-gradient-to-t before:from-blue-500 before:to-cyan-500 before:block before:rounded-full before:mt-1 before:-left-6 before:absolute relative left-5">
-                  AWS
-                </p>
-              </div>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-4 sm:gap-36 mt-4 sm:mt-6 w-[80%]">
-              <div>
-                <p className="font-bold before:w-4 before:h-4 before:bg-gradient-to-t before:from-blue-500 before:to-cyan-500 before:block before:rounded-full before:mt-1 before:-left-6 before:absolute relative left-5">
-                  Vercel
-                </p>
-              </div>
-              <div>
-                <p className="font-bold before:w-4 before:h-4 before:bg-gradient-to-t before:from-blue-500 before:to-cyan-500 before:block before:rounded-full before:mt-1 before:-left-6 before:absolute relative left-5">
-                  Firebase
-                </p>
-              </div>
-              <div>
-                <p className="font-bold before:w-4 before:h-4 before:bg-gradient-to-t before:from-blue-500 before:to-cyan-500 before:block before:rounded-full before:mt-1 before:-left-6 before:absolute relative left-5">
-                  WebSockets
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-        <section className="py-8" id="aboutme">
-          <div className="container m-auto px-4">
-            <h2 className="text-2xl font-semibold">About me</h2>
-            <div className="mt-12 relative before:absolute before:top-0 before:left-16 before:rounded-full before:bottom-10 sm:before:bottom-2 before:w-1 before:bg-white">
-              <div className="pl-24 relative before:w-4 before:h-4 before:bg-gradient-to-t before:from-blue-500 before:to-cyan-500 before:absolute before:rounded-full before:left-[58px]">
-                <h3 className="absolute left-0 text-lg font-semibold">2021</h3>
-                <p>
-                  Pursuing BTech in Computer Science and Engineering from IEM
-                  Kolkata
-                </p>
-              </div>
-              <div className="pl-24 mt-24 relative before:w-4 before:h-4 before:bg-gradient-to-t before:from-blue-500 before:to-cyan-500 before:absolute before:rounded-full before:left-[58px]">
-                <h3 className="absolute left-0 text-lg font-semibold">2023</h3>
-                <p>
-                  Became more interested in IT and decided to try programming.
-                  Underwent Web development course and made a project.
-                </p>
-              </div>
-              <div className="pl-24 mt-24 relative before:w-4 before:h-4 before:bg-gradient-to-t before:from-blue-500 before:to-cyan-500 before:absolute before:rounded-full before:left-[58px]">
-                <h3 className="absolute left-0 text-lg font-semibold">2023</h3>
-                <p>
-                  Qualified Internal Round of Smart India Hackathon and Got
-                  Selected For Diversion 2023
-                </p>
-              </div>
-              <div className="pl-24 mt-24 relative before:w-4 before:h-4 before:bg-gradient-to-t before:from-blue-500 before:to-cyan-500 before:absolute before:rounded-full before:left-[58px]">
-                <h3 className="absolute left-0 text-lg font-semibold">2023</h3>
-                <p>
-                  Voluntereed Many Workshops For the GDSC ,Got certified for
-                  Amazon Cloud Practioner Essentials
-                </p>
-              </div>
-              <div className="pl-24 mt-24 relative before:w-4 before:h-4 before:bg-gradient-to-t before:from-blue-500 before:to-cyan-500 before:absolute before:rounded-full before:left-[58px]">
-                <h3 className="absolute left-0 text-lg font-semibold">2024</h3>
-                <p>
-                  Build Projects and actively seeking internships in Full Stack
-                  development
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-        <section>
-          <div className="container m-auto px-4">
-            <div>
-              <h1 className="text-2xl font-bold mt-10 mb-7">
-                Extracuricular Activities
-              </h1>
-            </div>
-            <div>
-              <ul>
-                <li>
-                <h2 className="mx-2 my-2 flex gap-4 text-xl">
-                    <FaLongArrowAltRight className="mt-1" />
-                    Playing Football
-                  </h2>
-                </li>
-                <h2 className="mx-2 my-2 flex gap-4 text-xl">
-                    <FaLongArrowAltRight className="mt-1" />
-                 <h2 className="text-lg">Photography</h2> 
-                  <a href="www.instagram.com"><BiLogoInstagram className="mt-2 text-xl"/></a> 
-                  </h2>
-                <li>
-                  <h2 className="mx-2 my-2 flex gap-4 text-xl">
-                    <FaLongArrowAltRight className="mt-1" />
-                    Playing chess 
-                   <a href="https://lichess.org/@/MChess_100"><FaRegChessKnight className="mt-1"/></a>
-                  </h2>
-                  
-                </li>
-              </ul>
-            </div>
-          </div>
-        </section>
-        <section className=" py-8" id="contact">
-  <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-96">
-    <div className="flex flex-col justify-center">
-      <h1 className="text-3xl font-bold mb-4">Contact Me</h1>
-      <p className="text-lg">If you have any questions or would like to get in touch, please reach out to me through any of the following methods:</p>
-    </div>
-    <div className="flex flex-col justify-center">
-      <ul className="space-y-4">
-        <li>
-          <span className="font-medium">Email: </span>
-          <a href="mailto:debanjanmukherjee015@gmail.com" className="text-blue-500 hover:underline">debanjanmukherjee015@gmail.com</a>
-        </li>
-        <li>
-          <span className="font-medium">Phone: </span>
-          <a href="tel:+91 7865891741" className="text-blue-500 hover:underline">Telephone Number</a>
-        </li>
-        <li>
-          <span className="font-medium">LinkedIn: </span>
-          <a href="https://www.linkedin.com/in/debanjan-mukherjee-1b8257170/" target="_blank" className="text-blue-500 hover:underline">Linkedin</a>
-        </li>
-        <li>
-          <span className="font-medium">Twitter: </span>
-          <a href="https://twitter.com/Debanja33226081" target="_blank" className="text-blue-500 hover:underline">@Debanja33226081</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-      </main>
-      <footer>
-        <div className="container m-auto flex justify-between px-4 py-6">
-          <div>
-            <p className="text-gray-300 text-xl">Copyright @ 2024</p>
-          </div>
-          <div>
-            <ul className="flex gap-4">
-              <li>
-                <a href="https://www.facebook.com">
-                  <FaFacebook className="w-9 h-9" />
-                </a>
-              </li>
-              <li>
-                <a href="https://github.com/BRAVO23111">
-                  <FaGithub className="w-9 h-9" />
-                </a>
-              </li>
-              <li>
-                <a href="https://www.linkedin.com/in/debanjan-mukherjee-1b8257170/">
-                  <FaLinkedin className="w-9 h-9" />
-                </a>
-              </li>
-            </ul>
-          </div>
+                <motion.div 
+                  className="w-full bg-slate-700 rounded-full h-2"
+                  initial={{ width: 0 }}
+                  whileInView={{ width: "100%" }}
+                  viewport={{ once: true }}
+                >
+                  <motion.div 
+                    className="h-full bg-gradient-to-r from-blue-400 to-purple-500 rounded-full"
+                    initial={{ width: 0 }}
+                    whileInView={{ width: `${skill.level}%` }}
+                    transition={{ duration: 1, delay: 0.2 }}
+                    viewport={{ once: true }}
+                  />
+                </motion.div>
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
-      </footer>
-      {scrolling && (
-        <button
-          className="fixed block right-8 bottom-0 w-24"
-          onClick={() => {
-            window.scrollTo(0, 0);
-          }}
-        >
-          <FaArrowUp
-            color="purple"
-            className="h-10 text-xl ml-10 rounded-lg "
-          />{" "}
-          {/* Replace <img src={ArrowDown} /> with <FaArrowDown /> */}
-        </button>
-      )}
-    </>
-  );
-}
+      </section>
 
-export default App;
+      {/* Contact Section */}
+      <section id="contact" className="py-20">
+        <div className="container mx-auto px-4 text-center">
+          <motion.h2 
+            initial={{ opacity: 0, y            : 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+            className="text-4xl font-bold text-center mb-8"
+          >
+            Contact Me
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="text-lg text-slate-400 mb-12"
+          >
+            Feel free to reach out to discuss your next project, collaboration opportunities, or just to say hello.
+          </motion.p>
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="flex justify-center space-x-6"
+          >
+            {[
+              { href: "https://github.com/BRAVO23111", icon: <Github className="w-6 h-6" /> },
+              { href: "https://www.linkedin.com/in/debanjan-mukherjee-1b8257170/", icon: <Linkedin className="w-6 h-6" /> },
+              { href: "mailto:debanjanmukherjee015@gmail.com", icon: <Mail className="w-6 h-6" /> },
+            ].map((social, index) => (
+              <motion.a
+                key={index}
+                href={social.href}
+                variants={itemVariants}
+                whileHover={{ scale: 1.2 }}
+                className="p-3 bg-slate-800 rounded-full hover:bg-slate-700 transition-colors"
+              >
+                {social.icon}
+              </motion.a>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="py-6 bg-slate-950 text-center text-slate-500">
+        <p>
+          &copy; {new Date().getFullYear()} Debanjan Mukherjee. All rights reserved.
+        </p>
+      </footer>
+
+      {/* Scroll to Top */}
+      <ScrollToTop />
+    </div>
+  );
+};
+
+export default Portfolio;
