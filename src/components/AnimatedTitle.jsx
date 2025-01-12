@@ -11,18 +11,19 @@ const AnimatedTitle = () => {
   const containerRef = useRef(null);
   const [currentPhrase, setCurrentPhrase] = useState(phrases[0]);
   const timeoutRef = useRef(null);
+  const currentIndexRef = useRef(0);
 
   useEffect(() => {
     const container = containerRef.current;
     const letters = container.querySelectorAll('.letter');
-    let currentIndex = 0;
 
     const animateLetters = () => {
       const tl = gsap.timeline({
         onComplete: () => {
           timeoutRef.current = setTimeout(() => {
-            currentIndex = (currentIndex + 1) % phrases.length;
-            setCurrentPhrase(phrases[currentIndex]);
+            // Update index and set next phrase
+            currentIndexRef.current = (currentIndexRef.current + 1) % phrases.length;
+            setCurrentPhrase(phrases[currentIndexRef.current]);
           }, 500);
         }
       });
@@ -86,12 +87,14 @@ const AnimatedTitle = () => {
           each: 0.03,
           from: "random",
         },
-        ease: "power2.in"
+        ease: "power2.in",
+        delay: 0.2 // Add a small delay before fading out
       });
     };
 
     animateLetters();
 
+    // Cleanup
     return () => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
@@ -102,7 +105,7 @@ const AnimatedTitle = () => {
   const createLetterSpans = (text) => {
     return text.split('').map((char, index) => (
       <span 
-        key={index} 
+        key={`${text}-${index}`} // Improved key for better React reconciliation
         className={`letter inline-block ${char === ' ' ? 'mx-2' : ''}`}
         style={{
           display: 'inline-block',
