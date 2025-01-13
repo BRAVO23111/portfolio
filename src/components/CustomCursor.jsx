@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { motion, useSpring } from 'framer-motion';
+import { motion, useSpring, useScroll, useTransform } from 'framer-motion';
 
 const CustomCursor = ({ follow }) => {
   const [isHoveringText, setIsHoveringText] = useState(false);
+  const { scrollYProgress } = useScroll();
   
   const cursorX = useSpring(0, {
     damping: 25,
@@ -15,6 +16,10 @@ const CustomCursor = ({ follow }) => {
     stiffness: 150,
     mass: 0.3
   });
+
+  // Transform scroll progress to rotation degrees
+  const rotation = useTransform(scrollYProgress, [0, 1], [0, 360]);
+  const dasharray = useTransform(scrollYProgress, [0, 1], ["0, 100", "100, 100"]);
 
   useEffect(() => {
     const moveCursor = (e) => {
@@ -76,6 +81,35 @@ const CustomCursor = ({ follow }) => {
             ease: "easeInOut"
           }}
         />
+        
+        {/* Scroll Progress Circle */}
+        <svg 
+          className="absolute inset-0 w-full h-full -rotate-90"
+          viewBox="0 0 100 100"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <motion.circle
+            cx="50"
+            cy="50"
+            r="45"
+            stroke="rgba(96, 165, 250, 0.5)"
+            strokeWidth="2"
+            strokeDasharray="100 100"
+            className="mix-blend-difference"
+          />
+          <motion.circle
+            cx="50"
+            cy="50"
+            r="45"
+            stroke="rgb(96, 165, 250)"
+            strokeWidth="4"
+            strokeDasharray={dasharray}
+            className="mix-blend-difference"
+            style={{ rotate: rotation }}
+          />
+        </svg>
+
         {isHoveringText && (
           <motion.div
             className="absolute inset-0 border-2 border-blue-500 rounded-full mix-blend-difference"

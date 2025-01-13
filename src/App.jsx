@@ -1,12 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronUp, ExternalLink, Github, Linkedin, Mail } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
 import SmoothScroll from './components/LocomotiveScroll';
 import StaticHireMe from './components/StaticHireMe';
 import AnimatedTitle from './components/AnimatedTitle';
 import CustomCursor from './components/CustomCursor';
 import './styles/locomotive-scroll.css';
 import './styles/cursor.css';
+
+const ScrollProgress = () => {
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
+  return (
+    <motion.div 
+      className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-purple-500 origin-[0%] z-50 mix-blend-difference"
+      style={{ scaleX }} 
+    />
+  );
+};
 
 const ScrollToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -124,6 +140,7 @@ const Portfolio = () => {
 
   return (
     <div className="relative">
+      <ScrollProgress />
       <CustomCursor follow />
       <SmoothScroll>
         <div className="min-h-screen bg-gradient-to-br from-slate-950 to-slate-900 text-white">
