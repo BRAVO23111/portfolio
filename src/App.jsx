@@ -4,7 +4,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import SmoothScroll from './components/LocomotiveScroll';
 import StaticHireMe from './components/StaticHireMe';
 import AnimatedTitle from './components/AnimatedTitle';
+import CustomCursor from './components/CustomCursor';
 import './styles/locomotive-scroll.css';
+import './styles/cursor.css';
 
 const ScrollToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -121,269 +123,272 @@ const Portfolio = () => {
   };
 
   return (
-    <SmoothScroll>
-      <div className="min-h-screen bg-gradient-to-br from-slate-950 to-slate-900 text-white">
-        {/* Navbar */}
-        <motion.nav 
-          initial={{ y: -100 }}
-          animate={{ y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="fixed w-full bg-slate-950/80 backdrop-blur-lg z-50"
-        >
-          <div className="container mx-auto px-4">
-            <div className="flex items-center justify-between h-16">
-              <motion.span 
-                whileHover={{ scale: 1.1 }}
-                className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text"
-              >
-                DM
-              </motion.span>
-              <div className="hidden md:flex space-x-8">
-                {['Projects', 'Skills', 'Contact'].map((item) => (
-                  <motion.a 
-                    key={item}
-                    href={`#${item.toLowerCase()}`}
-                    whileHover={{ scale: 1.1, color: '#60A5FA' }}
-                    className="transition-colors"
-                  >
-                    {item}
-                  </motion.a>
-                ))}
+    <div className="relative">
+      <CustomCursor follow />
+      <SmoothScroll>
+        <div className="min-h-screen bg-gradient-to-br from-slate-950 to-slate-900 text-white">
+          {/* Navbar */}
+          <motion.nav 
+            initial={{ y: -100 }}
+            animate={{ y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="fixed w-full bg-slate-950/80 backdrop-blur-lg z-50"
+          >
+            <div className="container mx-auto px-4">
+              <div className="flex items-center justify-between h-16">
+                <motion.span 
+                  whileHover={{ scale: 1.1 }}
+                  className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text"
+                >
+                  DM
+                </motion.span>
+                <div className="hidden md:flex space-x-8">
+                  {['Projects', 'Skills', 'Contact'].map((item) => (
+                    <motion.a 
+                      key={item}
+                      href={`#${item.toLowerCase()}`}
+                      whileHover={{ scale: 1.1, color: '#60A5FA' }}
+                      className="transition-colors"
+                    >
+                      {item}
+                    </motion.a>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
-        </motion.nav>
+          </motion.nav>
 
-        {/* Hero Section */}
-        <div className="min-h-screen flex items-center justify-center pt-16">
-          <div className="container mx-auto px-4 text-center">
-            <motion.h1 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text"
-            >
-              Debanjan Mukherjee
-            </motion.h1>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
-              className="text-2xl md:text-4xl text-slate-400 mb-8 h-12 flex items-center justify-center flex-wrap gap-2"
-            >
-              <StaticHireMe />
-              <AnimatedTitle />
-            </motion.div>
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7, duration: 0.5 }}
-              className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-12"
-            >
-              Crafting seamless digital experiences from front to back.
-              Specializing in MERN stack development to bring your vision to life.
-            </motion.p>
-            <motion.div 
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-              className="flex justify-center space-x-6"
-            >
-              {[
-                { href: "https://github.com/BRAVO23111", icon: <Github className="w-6 h-6" /> },
-                { href: "https://www.linkedin.com/in/debanjan-mukherjee-1b8257170/", icon: <Linkedin className="w-6 h-6" /> },
-                { href: "mailto:debanjanmukherjee015@gmail.com", icon: <Mail className="w-6 h-6" /> }
-              ].map((social, index) => (
-                <motion.a
-                  key={index}
-                  href={social.href}
-                  variants={itemVariants}
-                  whileHover={{ scale: 1.2 }}
-                  className="p-3 bg-slate-800 rounded-full hover:bg-slate-700 transition-colors"
-                >
-                  {social.icon}
-                </motion.a>
-              ))}
-            </motion.div>
-          </div>
-        </div>
-
-        {/* Projects Section */}
-        <section id="projects" className="py-20">
-          <div className="container mx-auto px-4">
-            <motion.h2 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-              className="text-4xl font-bold text-center mb-16"
-            >
-              Projects
-            </motion.h2>
-            <motion.div 
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              className="grid grid-cols-1 md:grid-cols-2 gap-8"
-            >
-              {projects.map((project, index) => (
-                <motion.div
-                  key={index}
-                  variants={itemVariants}
-                  whileHover={{ y: -8 }}
-                  className="group relative bg-slate-800/50 rounded-xl overflow-hidden backdrop-blur-sm transition-all duration-300"
-                >
-                  <div className="aspect-video overflow-hidden">
-                    <img 
-                      src={project.image} 
-                      alt={project.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  <div className="p-6">
-                    <h3 className="text-2xl font-bold mb-2">{project.title}</h3>
-                    <p className="text-slate-400 mb-4">{project.description}</p>
-                    <div className="flex flex-wrap gap-2 mb-6">
-                      {project.tech.map((tech, i) => (
-                        <span key={i} className="px-3 py-1 bg-slate-700 rounded-full text-sm">
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                    <div className="flex gap-4">
-                      <motion.a 
-                        whileHover={{ scale: 1.05 }}
-                        href={project.github}
-                        className="flex items-center gap-2 px-4 py-2 bg-slate-700 rounded-lg hover:bg-slate-600 transition-colors"
-                      >
-                        <Github className="w-4 h-4" />
-                        Code
-                      </motion.a>
-                      <motion.a 
-                        whileHover={{ scale: 1.05 }}
-                        href={project.live}
-                        className={`flex items-center gap-2 px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-500 transition-colors ${project.live === '#' ? 'opacity-50 cursor-not-allowed' : ''}`}
-                      >
-                        <ExternalLink className="w-4 h-4" />
-                        Live
-                      </motion.a>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Skills Section */}
-        <section id="skills" className="py-20 bg-slate-800/30">
-          <div className="container mx-auto px-4">
-            <motion.h2 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-              className="text-4xl font-bold text-center mb-16"
-            >
-              Skills
-            </motion.h2>
-            <motion.div 
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
-            >
-              {skills.map((skill, index) => (
-                <motion.div
-                  key={index}
-                  variants={itemVariants}
-                  whileHover={{ scale: 1.05 }}
-                  className="bg-slate-800/50 rounded-xl p-6 backdrop-blur-sm"
-                >
-                  <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-xl font-bold">{skill.name}</h3>
-                    <span className="text-blue-400">{skill.level}%</span>
-                  </div>
-                  <motion.div 
-                    className="w-full bg-slate-700 rounded-full h-2"
-                    initial={{ width: 0 }}
-                    whileInView={{ width: "100%" }}
-                    viewport={{ once: true }}
+          {/* Hero Section */}
+          <div className="min-h-screen flex items-center justify-center pt-16">
+            <div className="container mx-auto px-4 text-center">
+              <motion.h1 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text"
+              >
+                Debanjan Mukherjee
+              </motion.h1>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5 }}
+                className="text-2xl md:text-4xl text-slate-400 mb-8 h-12 flex items-center justify-center flex-wrap gap-2"
+              >
+                <StaticHireMe />
+                <AnimatedTitle />
+              </motion.div>
+              <motion.p 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.7, duration: 0.5 }}
+                className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-12"
+              >
+                Crafting seamless digital experiences from front to back.
+                Specializing in MERN stack development to bring your vision to life.
+              </motion.p>
+              <motion.div 
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+                className="flex justify-center space-x-6"
+              >
+                {[
+                  { href: "https://github.com/BRAVO23111", icon: <Github className="w-6 h-6" /> },
+                  { href: "https://www.linkedin.com/in/debanjan-mukherjee-1b8257170/", icon: <Linkedin className="w-6 h-6" /> },
+                  { href: "mailto:debanjanmukherjee015@gmail.com", icon: <Mail className="w-6 h-6" /> }
+                ].map((social, index) => (
+                  <motion.a
+                    key={index}
+                    href={social.href}
+                    variants={itemVariants}
+                    whileHover={{ scale: 1.2 }}
+                    className="p-3 bg-slate-800 rounded-full hover:bg-slate-700 transition-colors"
                   >
-                    <motion.div 
-                      className="h-full bg-gradient-to-r from-blue-400 to-purple-500 rounded-full"
-                      initial={{ width: 0 }}
-                      whileInView={{ width: `${skill.level}%` }}
-                      transition={{ duration: 1, delay: 0.2 }}
-                      viewport={{ once: true }}
-                    />
+                    {social.icon}
+                  </motion.a>
+                ))}
+              </motion.div>
+            </div>
+          </div>
+
+          {/* Projects Section */}
+          <section id="projects" className="py-20">
+            <div className="container mx-auto px-4">
+              <motion.h2 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                viewport={{ once: true }}
+                className="text-4xl font-bold text-center mb-16"
+              >
+                Projects
+              </motion.h2>
+              <motion.div 
+                variants={containerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                className="grid grid-cols-1 md:grid-cols-2 gap-8"
+              >
+                {projects.map((project, index) => (
+                  <motion.div
+                    key={index}
+                    variants={itemVariants}
+                    whileHover={{ y: -8 }}
+                    className="group relative bg-slate-800/50 rounded-xl overflow-hidden backdrop-blur-sm transition-all duration-300"
+                  >
+                    <div className="aspect-video overflow-hidden">
+                      <img 
+                        src={project.image} 
+                        alt={project.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    </div>
+                    <div className="p-6">
+                      <h3 className="text-2xl font-bold mb-2">{project.title}</h3>
+                      <p className="text-slate-400 mb-4">{project.description}</p>
+                      <div className="flex flex-wrap gap-2 mb-6">
+                        {project.tech.map((tech, i) => (
+                          <span key={i} className="px-3 py-1 bg-slate-700 rounded-full text-sm">
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                      <div className="flex gap-4">
+                        <motion.a 
+                          whileHover={{ scale: 1.05 }}
+                          href={project.github}
+                          className="flex items-center gap-2 px-4 py-2 bg-slate-700 rounded-lg hover:bg-slate-600 transition-colors"
+                        >
+                          <Github className="w-4 h-4" />
+                          Code
+                        </motion.a>
+                        <motion.a 
+                          whileHover={{ scale: 1.05 }}
+                          href={project.live}
+                          className={`flex items-center gap-2 px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-500 transition-colors ${project.live === '#' ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                          Live
+                        </motion.a>
+                      </div>
+                    </div>
                   </motion.div>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </section>
+                ))}
+              </motion.div>
+            </div>
+          </section>
 
-        {/* Contact Section */}
-        <section id="contact" className="py-20">
-          <div className="container mx-auto px-4 text-center">
-            <motion.h2 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-              className="text-4xl font-bold text-center mb-8"
-            >
-              Contact Me
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="text-lg text-slate-400 mb-12"
-            >
-              Feel free to reach out to discuss your next project, collaboration opportunities, or just to say hello.
-            </motion.p>
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              className="flex justify-center space-x-6"
-            >
-              {[
-                { href: "https://github.com/BRAVO23111", icon: <Github className="w-6 h-6" /> },
-                { href: "https://www.linkedin.com/in/debanjan-mukherjee-1b8257170/", icon: <Linkedin className="w-6 h-6" /> },
-                { href: "mailto:debanjanmukherjee015@gmail.com", icon: <Mail className="w-6 h-6" /> },
-              ].map((social, index) => (
-                <motion.a
-                  key={index}
-                  href={social.href}
-                  variants={itemVariants}
-                  whileHover={{ scale: 1.2 }}
-                  className="p-3 bg-slate-800 rounded-full hover:bg-slate-700 transition-colors"
-                >
-                  {social.icon}
-                </motion.a>
-              ))}
-            </motion.div>
-          </div>
-        </section>
+          {/* Skills Section */}
+          <section id="skills" className="py-20 bg-slate-800/30">
+            <div className="container mx-auto px-4">
+              <motion.h2 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                viewport={{ once: true }}
+                className="text-4xl font-bold text-center mb-16"
+              >
+                Skills
+              </motion.h2>
+              <motion.div 
+                variants={containerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+              >
+                {skills.map((skill, index) => (
+                  <motion.div
+                    key={index}
+                    variants={itemVariants}
+                    whileHover={{ scale: 1.05 }}
+                    className="bg-slate-800/50 rounded-xl p-6 backdrop-blur-sm"
+                  >
+                    <div className="flex justify-between items-center mb-4">
+                      <h3 className="text-xl font-bold">{skill.name}</h3>
+                      <span className="text-blue-400">{skill.level}%</span>
+                    </div>
+                    <motion.div 
+                      className="w-full bg-slate-700 rounded-full h-2"
+                      initial={{ width: 0 }}
+                      whileInView={{ width: "100%" }}
+                      viewport={{ once: true }}
+                    >
+                      <motion.div 
+                        className="h-full bg-gradient-to-r from-blue-400 to-purple-500 rounded-full"
+                        initial={{ width: 0 }}
+                        whileInView={{ width: `${skill.level}%` }}
+                        transition={{ duration: 1, delay: 0.2 }}
+                        viewport={{ once: true }}
+                      />
+                    </motion.div>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </div>
+          </section>
 
-        {/* Footer */}
-        <footer className="py-6 bg-slate-950 text-center text-slate-500">
-          <p>
-            &copy; {new Date().getFullYear()} Debanjan Mukherjee. All rights reserved.
-          </p>
-        </footer>
+          {/* Contact Section */}
+          <section id="contact" className="py-20">
+            <div className="container mx-auto px-4 text-center">
+              <motion.h2 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                viewport={{ once: true }}
+                className="text-4xl font-bold text-center mb-8"
+              >
+                Contact Me
+              </motion.h2>
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                viewport={{ once: true }}
+                className="text-lg text-slate-400 mb-12"
+              >
+                Feel free to reach out to discuss your next project, collaboration opportunities, or just to say hello.
+              </motion.p>
+              <motion.div
+                variants={containerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                className="flex justify-center space-x-6"
+              >
+                {[
+                  { href: "https://github.com/BRAVO23111", icon: <Github className="w-6 h-6" /> },
+                  { href: "https://www.linkedin.com/in/debanjan-mukherjee-1b8257170/", icon: <Linkedin className="w-6 h-6" /> },
+                  { href: "mailto:debanjanmukherjee015@gmail.com", icon: <Mail className="w-6 h-6" /> },
+                ].map((social, index) => (
+                  <motion.a
+                    key={index}
+                    href={social.href}
+                    variants={itemVariants}
+                    whileHover={{ scale: 1.2 }}
+                    className="p-3 bg-slate-800 rounded-full hover:bg-slate-700 transition-colors"
+                  >
+                    {social.icon}
+                  </motion.a>
+                ))}
+              </motion.div>
+            </div>
+          </section>
 
-        {/* Scroll to Top */}
-        <ScrollToTop />
-      </div>
-    </SmoothScroll>
+          {/* Footer */}
+          <footer className="py-6 bg-slate-950 text-center text-slate-500">
+            <p>
+              &copy; {new Date().getFullYear()} Debanjan Mukherjee. All rights reserved.
+            </p>
+          </footer>
+
+          {/* Scroll to Top */}
+          <ScrollToTop />
+        </div>
+      </SmoothScroll>
+    </div>
   );
 };
 
