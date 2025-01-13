@@ -1,73 +1,90 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronUp, ExternalLink, Github, Linkedin, Mail } from 'lucide-react';
-import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
-import SmoothScroll from './components/LocomotiveScroll';
-import StaticHireMe from './components/StaticHireMe';
-import AnimatedTitle from './components/AnimatedTitle';
+import { motion, useScroll, useSpring } from 'framer-motion';
 import CustomCursor from './components/CustomCursor';
+import AnimatedTitle from './components/AnimatedTitle';
 import ParticlesBackground from './components/ParticlesBackground';
-import './styles/locomotive-scroll.css';
+import SmoothScroll from './components/LocomotiveScroll';
 import './styles/cursor.css';
+import 'locomotive-scroll/dist/locomotive-scroll.css';
 
-const ScrollProgress = () => {
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001
-  });
+// Animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      delayChildren: 0.3,
+      staggerChildren: 0.2
+    }
+  }
+};
 
-  return (
-    <motion.div 
-      className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-purple-500 origin-[0%] z-50 mix-blend-difference"
-      style={{ scaleX }} 
-    />
-  );
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      duration: 0.5,
+      ease: "easeOut"
+    }
+  }
 };
 
 const ScrollToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
 
-  const toggleVisibility = () => {
-    if (window.pageYOffset > 300) {
-      setIsVisible(true);
-    } else {
-      setIsVisible(false);
-    }
-  };
+  useEffect(() => {
+    const toggleVisibility = () => {
+      if (window.pageYOffset > 300) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(false);
+      }
+    };
+
+    window.addEventListener('scroll', toggleVisibility);
+    return () => window.removeEventListener('scroll', toggleVisibility);
+  }, []);
 
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: 'smooth',
+      behavior: 'smooth'
     });
   };
 
-  useEffect(() => {
-    window.addEventListener('scroll', toggleVisibility);
-    return () => {
-      window.removeEventListener('scroll', toggleVisibility);
-    };
-  }, []);
-
   return (
-    <AnimatePresence>
-      {isVisible && (
-        <motion.button
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 20 }}
-          onClick={scrollToTop}
-          className="fixed bottom-8 right-8 p-3 bg-blue-500 rounded-full shadow-lg hover:bg-blue-600 transition-colors z-50"
-        >
-          <ChevronUp className="w-6 h-6" />
-        </motion.button>
-      )}
-    </AnimatePresence>
+    <motion.button
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 20 }}
+      onClick={scrollToTop}
+      className="fixed bottom-8 right-8 p-3 bg-blue-500 rounded-full shadow-lg hover:bg-blue-600 transition-colors z-50"
+    >
+      <ChevronUp className="w-6 h-6" />
+    </motion.button>
   );
 };
 
 const Portfolio = () => {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e, card) => {
+    const rect = card.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const rotateX = (centerY - e.clientY) / 20;
+    const rotateY = (e.clientX - centerX) / 20;
+
+    setMousePosition({ x: rotateY, y: rotateX });
+  };
+
+  const handleMouseLeave = () => {
+    setMousePosition({ x: 0, y: 0 });
+  };
+
   const projects = [
     {
       title: "Med Help",
@@ -104,44 +121,28 @@ const Portfolio = () => {
   ];
 
   const skills = [
-    { name: "React", level: 90 },
-    { name: "Node.js", level: 85 },
-    { name: "MongoDB", level: 80 },
-    { name: "Express", level: 85 },
-    { name: "TypeScript", level: 75 },
-    { name: "Next.js", level: 80 },
-    { name: "TailwindCSS", level: 90 },
-    { name: "Docker", level: 70 },
-    { name: "AWS", level: 70 },
+    { name: "React", level: 60 },
+    { name: "Node.js", level: 60 },
+    { name: "MongoDB", level: 60 },
+    { name: "Express", level: 70 },
+    { name: "TypeScript", level: 50 },
+    { name: "Next.js", level: 60 },
+    { name: "TailwindCSS", level: 80 },
+    { name: "Docker", level: 50 },
+    { name: "AWS", level: 60 },
     { name: "Firebase", level: 80 },
     { name: "Redux", level: 80 },
     { name: "Framer Motion", level: 60 },
   ];
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.5
-      }
-    }
-  };
+  const socialLinks = [
+    { href: "https://github.com/BRAVO23111", icon: <Github className="w-6 h-6" /> },
+    { href: "https://www.linkedin.com/in/debanjan-mukherjee-1b8257170/", icon: <Linkedin className="w-6 h-6" /> },
+    { href: "mailto:debanjanmukherjee015@gmail.com", icon: <Mail className="w-6 h-6" /> }
+  ];
 
   return (
     <div className="relative">
-      <ScrollProgress />
       <CustomCursor follow />
       <SmoothScroll>
         <div className="min-h-screen bg-gradient-to-br from-slate-950 to-slate-900 text-white">
@@ -192,9 +193,8 @@ const Portfolio = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 }}
-                className="text-2xl md:text-4xl text-slate-400 mb-8 h-12 flex items-center justify-center flex-wrap gap-2"
+                className="text-2xl md:text-4xl text-slate-400 mb-8"
               >
-                <StaticHireMe />
                 <AnimatedTitle />
               </motion.div>
               <motion.p 
@@ -212,11 +212,7 @@ const Portfolio = () => {
                 animate="visible"
                 className="flex justify-center space-x-6"
               >
-                {[
-                  { href: "https://github.com/BRAVO23111", icon: <Github className="w-6 h-6" /> },
-                  { href: "https://www.linkedin.com/in/debanjan-mukherjee-1b8257170/", icon: <Linkedin className="w-6 h-6" /> },
-                  { href: "mailto:debanjanmukherjee015@gmail.com", icon: <Mail className="w-6 h-6" /> }
-                ].map((social, index) => (
+                {socialLinks.map((social, index) => (
                   <motion.a
                     key={index}
                     href={social.href}
@@ -248,51 +244,102 @@ const Portfolio = () => {
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true }}
-                className="grid grid-cols-1 md:grid-cols-2 gap-8"
+                className="grid grid-cols-1 md:grid-cols-2 gap-8 perspective-1000"
               >
                 {projects.map((project, index) => (
                   <motion.div
                     key={index}
                     variants={itemVariants}
-                    whileHover={{ y: -8 }}
-                    className="group relative bg-slate-800/50 rounded-xl overflow-hidden backdrop-blur-sm transition-all duration-300"
+                    className="group relative bg-slate-800/50 rounded-xl overflow-hidden backdrop-blur-sm transition-all duration-300 card-container"
+                    style={{
+                      perspective: "1000px",
+                    }}
+                    onMouseMove={(e) => handleMouseMove(e, e.currentTarget)}
+                    onMouseLeave={handleMouseLeave}
+                    whileHover={{
+                      scale: 1.02,
+                      transition: { duration: 0.2 }
+                    }}
                   >
-                    <div className="aspect-video overflow-hidden">
-                      <img 
-                        src={project.image} 
-                        alt={project.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                    </div>
-                    <div className="p-6">
-                      <h3 className="text-2xl font-bold mb-2">{project.title}</h3>
-                      <p className="text-slate-400 mb-4">{project.description}</p>
-                      <div className="flex flex-wrap gap-2 mb-6">
-                        {project.tech.map((tech, i) => (
-                          <span key={i} className="px-3 py-1 bg-slate-700 rounded-full text-sm">
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-                      <div className="flex gap-4">
-                        <motion.a 
+                    <motion.div
+                      className="w-full h-full"
+                      style={{
+                        transformStyle: "preserve-3d",
+                      }}
+                      animate={{
+                        rotateX: mousePosition.y,
+                        rotateY: mousePosition.x,
+                        transition: {
+                          type: "spring",
+                          stiffness: 400,
+                          damping: 30
+                        }
+                      }}
+                    >
+                      <div className="aspect-video overflow-hidden">
+                        <motion.img 
+                          src={project.image} 
+                          alt={project.title}
+                          className="w-full h-full object-cover"
+                          style={{
+                            transformStyle: "preserve-3d",
+                            transform: "translateZ(20px)"
+                          }}
                           whileHover={{ scale: 1.05 }}
-                          href={project.github}
-                          className="flex items-center gap-2 px-4 py-2 bg-slate-700 rounded-lg hover:bg-slate-600 transition-colors"
-                        >
-                          <Github className="w-4 h-4" />
-                          Code
-                        </motion.a>
-                        <motion.a 
-                          whileHover={{ scale: 1.05 }}
-                          href={project.live}
-                          className={`flex items-center gap-2 px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-500 transition-colors ${project.live === '#' ? 'opacity-50 cursor-not-allowed' : ''}`}
-                        >
-                          <ExternalLink className="w-4 h-4" />
-                          Live
-                        </motion.a>
+                          transition={{ duration: 0.3 }}
+                        />
                       </div>
-                    </div>
+                      <motion.div 
+                        className="p-6"
+                        style={{
+                          transformStyle: "preserve-3d",
+                          transform: "translateZ(30px)"
+                        }}
+                      >
+                        <motion.h3 
+                          className="text-2xl font-bold mb-2"
+                          style={{ transform: "translateZ(40px)" }}
+                        >
+                          {project.title}
+                        </motion.h3>
+                        <motion.p 
+                          className="text-slate-400 mb-4"
+                          style={{ transform: "translateZ(30px)" }}
+                        >
+                          {project.description}
+                        </motion.p>
+                        <div className="flex flex-wrap gap-2 mb-6">
+                          {project.tech.map((tech, i) => (
+                            <motion.span 
+                              key={i} 
+                              className="px-3 py-1 bg-slate-700 rounded-full text-sm"
+                              style={{ transform: "translateZ(35px)" }}
+                              whileHover={{ scale: 1.1 }}
+                            >
+                              {tech}
+                            </motion.span>
+                          ))}
+                        </div>
+                        <div className="flex gap-4" style={{ transform: "translateZ(40px)" }}>
+                          <motion.a 
+                            whileHover={{ scale: 1.05 }}
+                            href={project.github}
+                            className="flex items-center gap-2 px-4 py-2 bg-slate-700 rounded-lg hover:bg-slate-600 transition-colors"
+                          >
+                            <Github className="w-4 h-4" />
+                            Code
+                          </motion.a>
+                          <motion.a 
+                            whileHover={{ scale: 1.05 }}
+                            href={project.live}
+                            className={`flex items-center gap-2 px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-500 transition-colors ${project.live === '#' ? 'opacity-50 cursor-not-allowed' : ''}`}
+                          >
+                            <ExternalLink className="w-4 h-4" />
+                            Live
+                          </motion.a>
+                        </div>
+                      </motion.div>
+                    </motion.div>
                   </motion.div>
                 ))}
               </motion.div>
@@ -377,11 +424,7 @@ const Portfolio = () => {
                 viewport={{ once: true }}
                 className="flex justify-center space-x-6"
               >
-                {[
-                  { href: "https://github.com/BRAVO23111", icon: <Github className="w-6 h-6" /> },
-                  { href: "https://www.linkedin.com/in/debanjan-mukherjee-1b8257170/", icon: <Linkedin className="w-6 h-6" /> },
-                  { href: "mailto:debanjanmukherjee015@gmail.com", icon: <Mail className="w-6 h-6" /> },
-                ].map((social, index) => (
+                {socialLinks.map((social, index) => (
                   <motion.a
                     key={index}
                     href={social.href}
@@ -398,9 +441,7 @@ const Portfolio = () => {
 
           {/* Footer */}
           <footer className="py-6 bg-slate-950 text-center text-slate-500">
-            <p>
-              &copy; {new Date().getFullYear()} Debanjan Mukherjee. All rights reserved.
-            </p>
+            <p>&copy; {new Date().getFullYear()} Debanjan Mukherjee. All rights reserved.</p>
           </footer>
 
           {/* Scroll to Top */}

@@ -8,3 +8,36 @@ body {
   -webkit-background-clip: text;
   background-clip: text;
 }
+
+.card-container {
+  transform-style: preserve-3d;
+  transform: perspective(1000px);
+}
+
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.card-container:hover {
+  transition: all 0.2s ease-out;
+}
+
+.card-container:hover::after {
+  opacity: 1;
+}
+
+.card-container::after {
+  content: "";
+  position: absolute;
+  inset: -0.5rem;
+  transform: translateZ(-1px);
+  background: radial-gradient(
+    800px circle at var(--mouse-x) var(--mouse-y),
+    rgba(255, 255, 255, 0.06),
+    transparent 40%
+  );
+  opacity: 0;
+  transition: opacity 0.2s;
+  z-index: -1;
+  border-radius: 1rem;
+}

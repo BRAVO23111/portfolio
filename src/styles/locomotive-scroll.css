@@ -1,11 +1,6 @@
 /*! locomotive-scroll v4.1.3 | MIT License | https://github.com/locomotivemtl/locomotive-scroll */
 html.has-scroll-smooth {
   overflow: hidden;
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
 }
 
 html.has-scroll-dragging {
@@ -17,11 +12,6 @@ html.has-scroll-dragging {
 
 .has-scroll-smooth body {
   overflow: hidden;
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
 }
 
 .has-scroll-smooth [data-scroll-container] {
@@ -43,6 +33,14 @@ html.has-scroll-dragging {
   height: 100%;
 }
 
+[data-scroll-container] {
+  min-height: 100vh;
+}
+
+[data-scroll-section] {
+  position: relative;
+}
+
 .c-scrollbar {
   position: absolute;
   right: 0;
@@ -52,7 +50,6 @@ html.has-scroll-dragging {
   transform-origin: center right;
   transition: transform 0.3s, opacity 0.3s;
   opacity: 0;
-  z-index: 9999;
 }
 
 .c-scrollbar:hover {
@@ -81,15 +78,13 @@ html.has-scroll-dragging {
   position: absolute;
   top: 0;
   right: 0;
-  background-color: rgba(111, 119, 247, 0.5);
+  background-color: #60A5FA;
   opacity: 0.5;
   width: 7px;
+  border-radius: 10px;
   margin: 2px;
   cursor: -webkit-grab;
   cursor: grab;
-  transition: background-color .2s, width .2s;
-  will-change: transform;
-  border-radius: 10px;
 }
 
 .c-scrollbar_thumb:hover {

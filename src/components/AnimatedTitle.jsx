@@ -4,7 +4,7 @@ import gsap from 'gsap';
 const phrases = [
   "Backend Developer",
   "Frontend Developer",
-  "Full Stack Developer"
+  "Full Stack Developer",
 ];
 
 const AnimatedTitle = () => {
