@@ -5,6 +5,7 @@ import SmoothScroll from './components/LocomotiveScroll';
 import StaticHireMe from './components/StaticHireMe';
 import AnimatedTitle from './components/AnimatedTitle';
 import CustomCursor from './components/CustomCursor';
+import ParticlesBackground from './components/ParticlesBackground';
 import './styles/locomotive-scroll.css';
 import './styles/cursor.css';
 
@@ -176,8 +177,9 @@ const Portfolio = () => {
           </motion.nav>
 
           {/* Hero Section */}
-          <div className="min-h-screen flex items-center justify-center pt-16">
-            <div className="container mx-auto px-4 text-center">
+          <div className="min-h-screen flex items-center justify-center pt-16 relative overflow-hidden">
+            <ParticlesBackground />
+            <div className="container mx-auto px-4 text-center relative z-10">
               <motion.h1 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
