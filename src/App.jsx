@@ -5,6 +5,7 @@ import CustomCursor from './components/CustomCursor';
 import AnimatedTitle from './components/AnimatedTitle';
 import ParticlesBackground from './components/ParticlesBackground';
 import SmoothScroll from './components/LocomotiveScroll';
+import Projects from './components/Projects';
 import './styles/cursor.css';
 import 'locomotive-scroll/dist/locomotive-scroll.css';
 
@@ -28,6 +29,26 @@ const itemVariants = {
     transition: {
       duration: 0.5,
       ease: "easeOut"
+    }
+  },
+  float: {
+    y: [-10, 10, -10],
+    transition: {
+      duration: 6,
+      repeat: Infinity,
+      ease: "easeInOut"
+    }
+  }
+};
+
+const floatingAnimation = {
+  initial: { y: 0 },
+  animate: {
+    y: [-10, 10, -10],
+    transition: {
+      duration: 6,
+      repeat: Infinity,
+      ease: "easeInOut"
     }
   }
 };
@@ -84,41 +105,6 @@ const Portfolio = () => {
   const handleMouseLeave = () => {
     setMousePosition({ x: 0, y: 0 });
   };
-
-  const projects = [
-    {
-      title: "Med Help",
-      description: "MedHelp is an all-in-one hospital management system enabling patients to book doctors, store prescriptions, and manage health records, while admins and doctors streamline operations and appointments..",
-      image: "https://i.postimg.cc/C5B2dWtw/Screenshot-2024-11-17-at-6-10-02-PM.png",
-      github: "https://github.com/BRAVO23111/Medhelp-2",
-      live: "https://medhelp-v1.vercel.app/",
-      tech: ["Node.js", "Express", "MongoDB" , "ReactJs" , "Tailwind CSS" , "Recoil" , "Twillo API "]
-    },
-    {
-      title: "Connect",
-      description: "A real-time chat application where users can create rooms for group conversations, featuring privacy enhancements such as secure access and encrypted communication for confidential discussions.",
-      image: "https://i.postimg.cc/50kG4xsP/Screenshot-2024-11-17-at-6-10-32-PM.png ",
-      github: "https://github.com/BRAVO23111/Chat-and-notification-feature-codepth",
-      live: "https://connect-v1-project.vercel.app/",
-      tech: ["Firebase", "Framer Motion",  "React", "Tailwind CSS"]
-    },
-    {
-      title: "Share Newz",
-      description: "Simplified Financial Tracker to track all the investment at a single place",
-      image: "https://i.postimg.cc/ZRq2z9xB/Screenshot-2024-11-17-at-6-11-00-PM.png      ",
-      github: "https://github.com/BRAVO23111/SHARE-NEWZ",
-      live: "https://share-newz-mp1v.vercel.app/",
-      tech: ["React", "Express", "MongoDB" ,"NodeJs" , "Material UI" , "Javascript"]
-    },
-    {
-      title: "ReStory",
-      description: "One stop destination for buying and selling unused / exclusive books ",
-      image: "https://i.postimg.cc/jjcm16PY/Screenshot-2024-11-17-at-6-11-45-PM.png      ",
-      github: "https://github.com/BRAVO23111/ReStory",
-      live: "https://re-story.vercel.app/",
-      tech: ["React", "Express", "MongoDB" ,"Framer Motion" , "Nodejs" , "Redux" ,"Tailwind CSS"]
-    }
-  ];
 
   const skills = [
     { name: "React", level: 60 },
@@ -228,121 +214,23 @@ const Portfolio = () => {
           </div>
 
           {/* Projects Section */}
-          <section id="projects" className="py-20">
-            <div className="container mx-auto px-4">
-              <motion.h2 
+          <section id="projects" className="py-20 relative overflow-hidden">
+            <ParticlesBackground />
+            <div className="container mx-auto px-4 relative z-10">
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
                 viewport={{ once: true }}
-                className="text-4xl font-bold text-center mb-16"
+                className="text-center mb-12"
               >
-                Projects
-              </motion.h2>
-              <motion.div 
-                variants={containerVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                className="grid grid-cols-1 md:grid-cols-2 gap-8 perspective-1000"
-              >
-                {projects.map((project, index) => (
-                  <motion.div
-                    key={index}
-                    variants={itemVariants}
-                    className="group relative bg-slate-800/50 rounded-xl overflow-hidden backdrop-blur-sm transition-all duration-300 card-container"
-                    style={{
-                      perspective: "1000px",
-                    }}
-                    onMouseMove={(e) => handleMouseMove(e, e.currentTarget)}
-                    onMouseLeave={handleMouseLeave}
-                    whileHover={{
-                      scale: 1.02,
-                      transition: { duration: 0.2 }
-                    }}
-                  >
-                    <motion.div
-                      className="w-full h-full"
-                      style={{
-                        transformStyle: "preserve-3d",
-                      }}
-                      animate={{
-                        rotateX: mousePosition.y,
-                        rotateY: mousePosition.x,
-                        transition: {
-                          type: "spring",
-                          stiffness: 400,
-                          damping: 30
-                        }
-                      }}
-                    >
-                      <div className="aspect-video overflow-hidden">
-                        <motion.img 
-                          src={project.image} 
-                          alt={project.title}
-                          className="w-full h-full object-cover"
-                          style={{
-                            transformStyle: "preserve-3d",
-                            transform: "translateZ(20px)"
-                          }}
-                          whileHover={{ scale: 1.05 }}
-                          transition={{ duration: 0.3 }}
-                        />
-                      </div>
-                      <motion.div 
-                        className="p-6"
-                        style={{
-                          transformStyle: "preserve-3d",
-                          transform: "translateZ(30px)"
-                        }}
-                      >
-                        <motion.h3 
-                          className="text-2xl font-bold mb-2"
-                          style={{ transform: "translateZ(40px)" }}
-                        >
-                          {project.title}
-                        </motion.h3>
-                        <motion.p 
-                          className="text-slate-400 mb-4"
-                          style={{ transform: "translateZ(30px)" }}
-                        >
-                          {project.description}
-                        </motion.p>
-                        <div className="flex flex-wrap gap-2 mb-6">
-                          {project.tech.map((tech, i) => (
-                            <motion.span 
-                              key={i} 
-                              className="px-3 py-1 bg-slate-700 rounded-full text-sm"
-                              style={{ transform: "translateZ(35px)" }}
-                              whileHover={{ scale: 1.1 }}
-                            >
-                              {tech}
-                            </motion.span>
-                          ))}
-                        </div>
-                        <div className="flex gap-4" style={{ transform: "translateZ(40px)" }}>
-                          <motion.a 
-                            whileHover={{ scale: 1.05 }}
-                            href={project.github}
-                            className="flex items-center gap-2 px-4 py-2 bg-slate-700 rounded-lg hover:bg-slate-600 transition-colors"
-                          >
-                            <Github className="w-4 h-4" />
-                            Code
-                          </motion.a>
-                          <motion.a 
-                            whileHover={{ scale: 1.05 }}
-                            href={project.live}
-                            className={`flex items-center gap-2 px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-500 transition-colors ${project.live === '#' ? 'opacity-50 cursor-not-allowed' : ''}`}
-                          >
-                            <ExternalLink className="w-4 h-4" />
-                            Live
-                          </motion.a>
-                        </div>
-                      </motion.div>
-                    </motion.div>
-                  </motion.div>
-                ))}
+                <h2 className="text-5xl font-bold mb-4 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">
+                  Projects
+                </h2>
+                <p className="text-slate-400 text-lg">
+                  Explore my latest works and creative endeavors
+                </p>
               </motion.div>
+              <Projects />
             </div>
           </section>
 
